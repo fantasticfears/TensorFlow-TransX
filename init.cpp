@@ -15,7 +15,8 @@ void setInPath(char *path) {
     int len = strlen(path);
     inPath = "";
     for (int i = 0; i < len; i++)
-        inPath = inPath + path[i];
+		inPath = inPath + path[i];
+	printf("%s\n", path);
     printf("Input Files Path : %s\n", inPath.c_str());
 }
 
@@ -64,13 +65,13 @@ void init() {
 	fclose(fin);
 
 	freqRel = (int *)calloc(relationTotal, sizeof(int));
-	
+
 	fin = fopen((inPath + "entity2id.txt").c_str(), "r");
 	tmp = fscanf(fin, "%d", &entityTotal);
 	fclose(fin);
 
 	freqEnt = (int *)calloc(entityTotal, sizeof(int));
-	
+
 	fin = fopen((inPath + "train2id.txt").c_str(), "r");
 	tmp = fscanf(fin, "%d", &tripleTotal);
 	trainHead = (Triple *)calloc(tripleTotal, sizeof(Triple));
@@ -191,7 +192,7 @@ int corrupt_head(int id, int h, int r) {
 		mid = (lef + rig) >> 1;
 		if (trainHead[mid].t - mid + ll - 1 < tmp)
 			lef = mid;
-		else 
+		else
 			rig = mid;
 	}
 	return tmp + lef - ll + 1;
@@ -223,7 +224,7 @@ int corrupt_tail(int id, int t, int r) {
 		mid = (lef + rig) >> 1;
 		if (trainTail[mid].h - mid + ll - 1 < tmp)
 			lef = mid;
-		else 
+		else
 			rig = mid;
 	}
 	return tmp + lef - ll + 1;

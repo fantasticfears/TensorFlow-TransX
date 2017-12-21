@@ -6,15 +6,15 @@ import time
 import datetime
 import ctypes
 
-ll = ctypes.cdll.LoadLibrary   
+ll = ctypes.cdll.LoadLibrary
 lib = ll("./init.so")
 test_lib = ll("./test.so")
 
 class Config(object):
 
 	def __init__(self):
-		lib.setInPath("./data/FB15K/")
-		test_lib.setInPath("./data/FB15K/")
+		lib.setInPath(b"./data/FB15K/")
+		test_lib.setInPath(b"./data/FB15K/")
 		self.testFlag = True
 		self.loadFromData = True
 		self.L1_flag = True
@@ -78,7 +78,7 @@ def main(_):
 		config.relation = lib.getRelationTotal()
 		config.entity = lib.getEntityTotal()
 		config.batch_size = lib.getTripleTotal() // config.nbatches
-	
+
 	with tf.Graph().as_default():
 		sess = tf.Session()
 		with sess.as_default():
@@ -145,9 +145,9 @@ def main(_):
 						lib.getBatch(ph_addr, pt_addr, pr_addr, nh_addr, nt_addr, nr_addr, config.batch_size)
 						res += train_step(ph, pt, pr, nh, nt, nr)
 						current_step = tf.train.global_step(sess, global_step)
-					print times
-					print res
-				saver.save(sess, 'model.vec')
+					print(times)
+					print(res)
+				saver.save(sess, './model.vec')
 			else:
 				total = test_lib.getTestTotal()
 				for times in range(total):
@@ -158,7 +158,7 @@ def main(_):
 					test_lib.getTailBatch(ph_addr, pt_addr, pr_addr)
 					res = test_step(ph, pt, pr)
 					test_lib.testTail(res.__array_interface__['data'][0])
-					print times
+					print(times)
 					if (times % 50 == 0):
 						test_lib.test()
 				test_lib.test()
